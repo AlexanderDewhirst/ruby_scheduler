@@ -11,6 +11,17 @@ them, but off-site meetings must have 30 minutes of travel time padded to either
 end. This travel time however can overlap for back to back off-site meetings, and can
 extend past the start and end of the day.
 
+# Run Scheduler
+To run the scheduler
+```
+exec-scheduler
+```
+
+or 
+```
+ruby lib/scheduler.rb
+```
+
 # Tests
 To run the tests suite
 ```
