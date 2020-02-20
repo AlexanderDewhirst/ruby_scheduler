@@ -45,15 +45,113 @@ describe Scheduler::Schedule do
     end
 
     describe "#valid_meeting_schedule?" do
+        context "when time_left_in_day is greater than 0" do
+            before do
+                schedule.stub(:time_left_in_day).and_return(0.5)
+            end
+
+            it { expect(schedule.valid_meeting_schedule?).to be_truthy }
+        end
+
+        context "when time_left_in_day equals 0" do
+            before do
+                schedule.stub(:time_left_in_day).and_return(0.0)
+            end
+
+            it { expect(schedule.valid_meeting_schedule?).to be_truthy }
+        end
+
+        context "when time_left_in_day is less than 0" do
+            before do
+                schedule.stub(:time_left_in_day).and_return(-1.0)
+            end
+
+            it { expect(schedule.valid_meeting_schedule?).to be_falsy }
+        end
+
     end
 
     describe "#all_offsite_meetings?" do
+        context "when all meetings are offsite" do
+            let(:meetings) {
+                [{
+                    name: 'Meeting 1',
+                    duration: 2,
+                    type: :offsite
+                }, {
+                    name: 'Meeting 2',
+                    duration: 1,
+                    type: :offsite
+                }]
+            }
+
+            it { expect(schedule.all_offsite_meetings?).to be_truthy }
+        end
+
+        context "when any meetings are offsite" do
+            it { expect(schedule.all_offsite_meetings?).to be_falsy }
+        end
+
+        context "when no meetings are offsite" do
+            let(:meetings) {
+                [{
+                    name: 'Meeting 1',
+                    duration: 2,
+                    type: :onsite
+                }, {
+                    name: 'Meeting 2',
+                    duration: 1,
+                    type: :onsite
+                }]
+            }
+
+            it { expect(schedule.all_offsite_meetings?).to be_falsy }
+        end
     end
 
     describe "#any_offsite_meetings?" do
+        context "when all meetings are offsite" do
+            let(:meetings) {
+                [{
+                    name: 'Meeting 1',
+                    duration: 2,
+                    type: :offsite
+                }, {
+                    name: 'Meeting 2',
+                    duration: 1,
+                    type: :offsite
+                }]
+            }
+
+            it { expect(schedule.any_offsite_meetings?).to be_truthy }
+        end
+
+        context "when any meetings are offsite" do
+            it { expect(schedule.any_offsite_meetings?).to be_truthy }
+        end
+
+        context "when no meetings are offsite" do
+            let(:meetings) {
+                [{
+                    name: 'Meeting 1',
+                    duration: 2,
+                    type: :onsite
+                }, {
+                    name: 'Meeting 2',
+                    duration: 1,
+                    type: :onsite
+                }]
+            }
+
+            it { expect(schedule.any_offsite_meetings?).to be_falsy }
+        end
     end
 
     describe "#total_meeting_time" do
+        context "should return a float value representing hours" do
+            it { expect(schedule.total_meeting_time).to be_instance_of Float }
+            it { expect(schedule.total_meeting_time).to eq 4.0 }
+        end
     end
 
 end
