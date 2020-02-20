@@ -39,7 +39,7 @@ module Scheduler
         end
 
         schedule.reschedule
-        puts schedule
+        return schedule
     end
 
 end

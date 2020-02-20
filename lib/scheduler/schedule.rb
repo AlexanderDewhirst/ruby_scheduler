@@ -1,3 +1,5 @@
+require_relative './meeting'
+
 module Scheduler
 
     class Schedule
@@ -40,6 +42,8 @@ module Scheduler
 
 
         # Set a meeting schedule using an optimal meeting order
+        # Note: Would consider using Trailblazer to construct
+        # a contract and operation. 
         def reschedule
             set_meeting_order
 

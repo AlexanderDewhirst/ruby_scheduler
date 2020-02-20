@@ -29,6 +29,7 @@ module Scheduler
         # Input:
         # - NONE
         def set_end_time
+            return unless start_time
             @end_time = start_time + time_to_end
         end
 
@@ -43,7 +44,7 @@ module Scheduler
         # Output:
         # - Integer
         def offsite_buffer
-            buffer = offsite? ? 0.5 : 0
+            buffer = offsite? ? 0.5 : 0.0
             buffer * 3600
         end
 
@@ -51,7 +52,7 @@ module Scheduler
         # Output:
         # - Integer  / (Float)
         def time_to_end
-            duration * 3600
+            duration * 3600.0
         end
 
         private
@@ -68,7 +69,7 @@ module Scheduler
 
         # Method to raise error if invalid parameters
         # Note: Would use RoR ActiveRecord validations if this were
-        # a rails application. Could also use dry-rb gem validations 
+        # a rails application. Could also use dry-rb gem validations.
         def validate!
             raise ArgumentError.new("Invalid Params") unless valid?
         end
