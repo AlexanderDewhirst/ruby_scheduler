@@ -38,6 +38,7 @@ module Scheduler
             })
         end
 
+        schedule.reschedule
         puts schedule
     end
 

@@ -38,7 +38,62 @@ module Scheduler
             meeting_str
         end
 
+
+        # Set a meeting schedule using an optimal meeting order
+        def reschedule
+            set_meeting_order
+
+            meetings.first.set_start_time(first_start_time)
+
+            meetings.each_with_index do |meeting, index|
+                if meeting.start_time.nil?
+                    previous_meeting = meetings[index - 1]
+                    next_start_time = next_start_time(previous_meeting)
+                    meeting.set_start_time(next_start_time)
+                end
+                meeting.set_end_time
+            end
+            @meetings = meetings
+        end
+
+
         private
+
+        # Get start time for first meeting
+        def first_start_time
+            time = Time.now
+            Time.new(time.year, time.month, time.day, 9, 0, 0,  "-05:00")
+        end
+
+        # Place offsite before onsite meetings for an
+        # optimal meeting order
+        def optimal_meeting_order
+            offsite_meetings + onsite_meetings
+        end
+
+        # Select offsite meetings from all meetings
+        # Output:
+        # - Array
+        def offsite_meetings
+            meetings.select { |meeting| meeting.offsite? }
+        end
+
+        # Select onsite meetings from all meetings
+        # Output:
+        # - Array
+        def onsite_meetings
+            meetings.select{ |meeting| !meeting.offsite? }
+        end
+
+        # Set an optimal meeting order
+        def set_meeting_order
+            @meetings = optimal_meeting_order
+        end
+
+        # Calculate next meeting start_time
+        def next_start_time(meeting)
+            meeting.end_time + meeting.offsite_buffer
+        end 
 
         # Method to check valid parameters
         # Output:

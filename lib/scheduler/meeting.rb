@@ -18,6 +18,42 @@ module Scheduler
             validate!
         end
 
+        # Setter method for start_time attribute
+        # Input:
+        # - Time
+        def set_start_time(start_time)
+            @start_time = start_time
+        end
+
+        # Setter method for end_time attribute
+        # Input:
+        # - NONE
+        def set_end_time
+            @end_time = start_time + time_to_end
+        end
+
+        # Conditional method to check if type is offsite
+        # Output:
+        # - boolean
+        def offsite?
+            type == :offsite
+        end
+
+        # Calcuate offsite buffer for travel (30 minutes)
+        # Output:
+        # - Integer
+        def offsite_buffer
+            buffer = offsite? ? 0.5 : 0
+            buffer * 3600
+        end
+
+        # Calculate duration of meeting
+        # Output:
+        # - Integer  / (Float)
+        def time_to_end
+            duration * 3600
+        end
+
         private
 
         # Method to check valid parameters
