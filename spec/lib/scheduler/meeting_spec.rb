@@ -52,6 +52,10 @@ describe Scheduler::Meeting do
             it { expect(meeting.methods).to include(:set_end_time) }
         end
 
+        context "should return if no meeting start_time" do
+            it { expect(meeting.set_end_time).to be_nil }
+        end
+
         context "should set meeting end_time if meeting has start_time" do
             before do
                 time = Time.now

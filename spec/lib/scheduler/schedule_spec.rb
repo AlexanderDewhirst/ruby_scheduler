@@ -44,5 +44,17 @@ describe Scheduler::Schedule do
         end
     end
 
+    describe "#valid_meeting_schedule?" do
+    end
+
+    describe "#all_offsite_meetings?" do
+    end
+
+    describe "#any_offsite_meetings?" do
+    end
+
+    describe "#total_meeting_time" do
+    end
+
 end
     

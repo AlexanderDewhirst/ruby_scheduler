@@ -52,8 +52,6 @@ module Scheduler
             offsite? ? 0.5 : 0.0
         end
 
-        
-
         private
 
         # Method to check valid parameters
