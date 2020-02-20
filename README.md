@@ -57,7 +57,7 @@ and propose a layout for those meetings in a format like this:
 3:30 - 4:30 - Meeting 3
 ```
 
-# Here are a few example sets for you to test against:
+## Here are a few example sets for you to test against:
 
 Example 1:
 ```
