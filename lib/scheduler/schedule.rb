@@ -1,17 +1,11 @@
 # RoR configuration would autoload the lib and helpers directories
-require_relative '../../helpers/schedule_helper'
 require_relative './meeting'
 
 module Scheduler
 
     class Schedule
         # meetings
-        include ScheduleHelper
         # Offsite meeting buffer can extend past the end of the day
-        # Case Bug: A day consisting of only offsite meetings that extends
-        # from the beginning of the day to the end of the day without
-        # any breaks would actually have a 9 hour length.
-        # Case Bug UPDATE: Check valid meeting schedule works. 
         DAY_LENGTH = {
             all_offsite: 9,
             any_offsite: 8.5,
@@ -61,7 +55,7 @@ module Scheduler
             meetings.each_with_index do |meeting, index|
                 if meeting.start_time.nil?
                     previous_meeting = meetings[index - 1]
-                    next_start_time = next_start_time(previous_meeting)
+                    next_start_time = previous_meeting.next_start_time
                     meeting.set_start_time(next_start_time)
                 end
                 meeting.set_end_time
@@ -110,7 +104,6 @@ module Scheduler
 
         # Determine total time in day given whether or not
         # there consist any offsite meetings. 
-        # Note: See BUG in class constant declaration.
         def time_left_in_day
             if all_offsite_meetings?
                 day_length = DAY_LENGTH[:all_offsite]
@@ -124,6 +117,8 @@ module Scheduler
 
         # Place offsite before onsite meetings for an
         # optimal meeting order
+        # Output:
+        # - Array
         def optimal_meeting_order
             offsite_meetings + onsite_meetings
         end
@@ -147,14 +142,14 @@ module Scheduler
             @meetings = optimal_meeting_order
         end
 
-        # Calculate next meeting start_time
-        def next_start_time(meeting)
-            meeting.end_time + to_seconds(meeting.offsite_buffer)
-        end
-
         # Calculate total meeting time and buffer for selected meetings
         # Note: This does not use the same methods as reschedule - refactor
         # to reuse those methods for consistency
+        # Input:
+        # - Array of Meetings
+        # - boolean
+        # Output:
+        # - Float
         def calculate_total_duration(selected_meetings, offsite:)
             start_buffer = offsite ? 0.5 : 0
             selected_meetings.reduce(start_buffer) { |sum, meeting| offsite ? sum + (meeting.duration + 0.5) : sum + meeting.duration }

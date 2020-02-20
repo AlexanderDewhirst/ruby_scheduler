@@ -48,6 +48,13 @@ module Scheduler
         end
 
         ## Additonal class methods
+        # Calculate next meeting start_time
+        # Output:
+        # - Time
+        def next_start_time
+            end_time + to_seconds(offsite_buffer)
+        end
+
         # Calcuate offsite buffer for travel (30 minutes)
         # Output:
         # - Integer
