@@ -1,5 +1,5 @@
 # RoR configuration would autoload the lib and helpers directories
-require_relative '../helpers/schedule_helper'
+require_relative '../../helpers/schedule_helper'
 
 module Scheduler
     
