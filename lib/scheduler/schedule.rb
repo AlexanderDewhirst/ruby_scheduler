@@ -28,6 +28,8 @@ module Scheduler
         end
 
         # Override `to_s` method to print expected message provided in README.
+        # Output:
+        # - String
         def to_s
             meeting_str = meetings.reduce("") do |str, meeting| 
                 str += meeting.start_time&.strftime("%I:%M %p") || 'none'
@@ -43,7 +45,7 @@ module Scheduler
 
         # Set a meeting schedule using an optimal meeting order
         # Note: Would consider using Trailblazer to construct
-        # a contract and operation. 
+        # a contract and operation.
         def reschedule
             set_meeting_order
 
@@ -58,6 +60,7 @@ module Scheduler
                 meeting.set_end_time
             end
             @meetings = meetings
+            self
         end
 
 

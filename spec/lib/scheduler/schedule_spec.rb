@@ -39,8 +39,8 @@ describe Scheduler::Schedule do
 
     describe "#reschedule" do
         context "reschedule meeting order and set start and end times" do
-            it { expect(schedule.reschedule).to be_instance_of Array }
-            it { expect(schedule.reschedule[0].name).to eq 'Meeting 2' }
+            it { expect(schedule.reschedule).to be_instance_of Scheduler::Schedule }
+            it { expect(schedule.reschedule.meetings[0].name).to eq 'Meeting 2' }
         end
     end
 
