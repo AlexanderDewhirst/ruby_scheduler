@@ -11,6 +11,21 @@ them, but off-site meetings must have 30 minutes of travel time padded to either
 end. This travel time however can overlap for back to back off-site meetings, and can
 extend past the start and end of the day.
 
+# Tests
+To run the tests suite
+```
+test-scheduler
+```
+
+or to run a specific test file
+```
+bundle exec rspec spec/lib/scheduler_spec.rb
+bundle exec rspec spec/lib/scheduler/meeting_spec.rb
+bundle exec rspec spec/lib/schedulder/schedule_spec.rb
+```
+
+# Examples
+
 ```
 Given a set of meetings (below is an example of a set of meetings):
 {
