@@ -1,17 +1,21 @@
-# RoR configuration would autoload the lib directory
+# RoR configuration would autoload the lib and helpers directories
+require_relative '../helpers/schedule_helper'
 require_relative './meeting'
 
 module Scheduler
 
     class Schedule
         # meetings
+        include ScheduleHelper
         # Offsite meeting buffer can extend past the end of the day
         # Case Bug: A day consisting of only offsite meetings that extends
         # from the beginning of the day to the end of the day without
         # any breaks would actually have a 9 hour length.
+        # Case Bug UPDATE: Check valid meeting schedule works. 
         DAY_LENGTH = {
-            offsite: 8.5,
-            onsite: 8
+            all_offsite: 9,
+            any_offsite: 8.5,
+            no_offsite: 8
         }
 
         attr_accessor :meetings
@@ -51,7 +55,16 @@ module Scheduler
             time_left_in_day >= 0
         end
 
+        # Check if all meetings are offsite
+        # Note: If RoR application, I would use the ActiveRecord scope method
+        # Output:
+        # - boolean
+        def all_offsite_meetings?
+            meetings.all? { |meeting| meeting.offsite? }
+        end
+
         # Check if any meetings are offsite
+        # Note: If RoR application, I would use the ActiveRecord scope method
         # Output:
         # - boolean
         def any_offsite_meetings?
@@ -81,7 +94,7 @@ module Scheduler
 
         # Calculate total meeting time for both onsite and offsite meetings
         def total_meeting_time
-            calculate_total_duration(offsite_meetings, :offsite) + calculate_total_duration(onsite_meetings, :onsite)
+            calculate_total_duration(offsite_meetings, offsite: true) + calculate_total_duration(onsite_meetings, offsite: false)
         end
 
         private
@@ -96,10 +109,12 @@ module Scheduler
         # there consist any offsite meetings. 
         # Note: See BUG in class constant declaration.
         def time_left_in_day
-            if any_offsite_meetings?
-                day_length = DAY_LENGTH[:offsite]
+            if all_offsite_meetings?
+                day_length = DAY_LENGTH[:all_offsite]
+            elsif any_offsite_meetings?
+                day_length = DAY_LENGTH[:any_offsite]
             else
-                day_length = DAY_LENGTH[:onsite]
+                day_length = DAY_LENGTH[:no_offsite]
             end
             day_length - total_meeting_time
         end
@@ -131,14 +146,15 @@ module Scheduler
 
         # Calculate next meeting start_time
         def next_start_time(meeting)
-            meeting.end_time + meeting.offsite_buffer
+            meeting.end_time + to_seconds(meeting.offsite_buffer)
         end
 
         # Calculate total meeting time and buffer for selected meetings
         # Note: This does not use the same methods as reschedule - refactor
         # to reuse those methods for consistency
-        def calculate_total_duration(selected_meetings, offsite)
-            selected_meetings.reduce(0) { |sum, meeting| offsite ? sum + (meeting.duration + 0.5) : sum + meeting.duration }
+        def calculate_total_duration(selected_meetings, offsite:)
+            start_buffer = offsite ? 0.5 : 0
+            selected_meetings.reduce(start_buffer) { |sum, meeting| offsite ? sum + (meeting.duration + 0.5) : sum + meeting.duration }
         end
 
         # Method to check valid parameters

@@ -1,7 +1,12 @@
+# RoR configuration would autoload the lib and helpers directories
+require_relative '../helpers/schedule_helper'
+
 module Scheduler
     
     class Meeting
         # name, duration, type, start_time, end_time
+        include ScheduleHelper
+
         attr_reader   :name, :duration, :type
         attr_accessor :start_time, :end_time
 
@@ -30,7 +35,7 @@ module Scheduler
         # - NONE
         def set_end_time
             return unless start_time
-            @end_time = start_time + time_to_end
+            @end_time = start_time + to_seconds(duration)
         end
 
         # Conditional method to check if type is offsite
@@ -44,16 +49,10 @@ module Scheduler
         # Output:
         # - Integer
         def offsite_buffer
-            buffer = offsite? ? 0.5 : 0.0
-            buffer * 3600
+            offsite? ? 0.5 : 0.0
         end
 
-        # Calculate duration of meeting
-        # Output:
-        # - Integer  / (Float)
-        def time_to_end
-            duration * 3600.0
-        end
+        
 
         private
 

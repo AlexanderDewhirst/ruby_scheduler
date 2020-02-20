@@ -94,7 +94,7 @@ describe Scheduler::Meeting do
             end
 
             it { expect(meeting.offsite_buffer).to be_instance_of Float }
-            it { expect(meeting.offsite_buffer).to eq 1800 }
+            it { expect(meeting.offsite_buffer).to eq 0.5 }
         end
 
         context "should return buffer for an onsite meeting" do
@@ -104,17 +104,6 @@ describe Scheduler::Meeting do
 
             it { expect(meeting.offsite_buffer).to be_instance_of Float }
             it { expect(meeting.offsite_buffer).to eq 0 }
-        end
-    end
-
-    describe "#time_to_end" do
-        let(:name)      { 'Meeting 1' }
-        let(:duration)  { 2 }
-        let(:type)      { :offsite }
-
-        context "should return duration in seconds" do
-            it { expect(meeting.time_to_end).to be_instance_of Float }
-            it { expect(meeting.time_to_end).to eq 7200 }
         end
     end
 
