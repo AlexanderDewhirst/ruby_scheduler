@@ -1,3 +1,4 @@
+# RoR configuration would autoload the lib directory
 require_relative './meeting'
 
 module Scheduler
