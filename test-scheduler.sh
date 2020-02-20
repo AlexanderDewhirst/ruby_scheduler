@@ -6,3 +6,4 @@
 bundle exec rspec spec/lib/scheduler_spec.rb
 bundle exec rspec spec/lib/scheduler/meeting_spec.rb
 bundle exec rspec spec/lib/schedulder/schedule_spec.rb
+bundle exec rspec spec/helpers/scheduler_helper_spec.rb
