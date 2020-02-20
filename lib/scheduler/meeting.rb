@@ -23,6 +23,7 @@ module Scheduler
             validate!
         end
 
+        ## Setter methods
         # Setter method for start_time attribute
         # Input:
         # - Time
@@ -38,6 +39,7 @@ module Scheduler
             @end_time = start_time + to_seconds(duration)
         end
 
+        ## Conditional methods
         # Conditional method to check if type is offsite
         # Output:
         # - boolean
@@ -45,6 +47,7 @@ module Scheduler
             type == :offsite
         end
 
+        ## Additonal class methods
         # Calcuate offsite buffer for travel (30 minutes)
         # Output:
         # - Integer

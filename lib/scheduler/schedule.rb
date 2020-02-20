@@ -32,6 +32,7 @@ module Scheduler
             validate!
         end
 
+        ## Overriden methods
         # Override `to_s` method to print expected message provided in README.
         # Output:
         # - String
@@ -48,6 +49,28 @@ module Scheduler
             meeting_str
         end
 
+        ## Setter methods
+        # Set a meeting schedule using an optimal meeting order
+        # Note: Would consider using Trailblazer to construct
+        # a contract and operation.
+        def reschedule
+            set_meeting_order
+
+            meetings.first.set_start_time(first_start_time)
+
+            meetings.each_with_index do |meeting, index|
+                if meeting.start_time.nil?
+                    previous_meeting = meetings[index - 1]
+                    next_start_time = next_start_time(previous_meeting)
+                    meeting.set_start_time(next_start_time)
+                end
+                meeting.set_end_time
+            end
+            @meetings = meetings
+            self
+        end
+        
+        ## Conditional methods
         # Check if any time left after meetings
         # Output:
         # - boolean
@@ -71,27 +94,7 @@ module Scheduler
             meetings.any? { |meeting| meeting.offsite? }
         end
 
-
-        # Set a meeting schedule using an optimal meeting order
-        # Note: Would consider using Trailblazer to construct
-        # a contract and operation.
-        def reschedule
-            set_meeting_order
-
-            meetings.first.set_start_time(first_start_time)
-
-            meetings.each_with_index do |meeting, index|
-                if meeting.start_time.nil?
-                    previous_meeting = meetings[index - 1]
-                    next_start_time = next_start_time(previous_meeting)
-                    meeting.set_start_time(next_start_time)
-                end
-                meeting.set_end_time
-            end
-            @meetings = meetings
-            self
-        end
-
+        # Additional class methods
         # Calculate total meeting time for both onsite and offsite meetings
         def total_meeting_time
             calculate_total_duration(offsite_meetings, offsite: true) + calculate_total_duration(onsite_meetings, offsite: false)
