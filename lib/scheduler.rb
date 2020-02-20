@@ -44,4 +44,5 @@ module Scheduler
 
 end
 
-Scheduler.run()
+schedule = Scheduler.run()
+puts schedule
