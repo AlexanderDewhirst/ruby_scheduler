@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../../../lib/scheduler/schedule'
+require_relative '../../../lib/ruby/scheduler/schedule'
 
 describe Scheduler::Schedule do
     let(:meetings) {

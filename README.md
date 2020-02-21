@@ -19,7 +19,7 @@ exec-scheduler
 
 or 
 ```
-ruby lib/scheduler.rb
+ruby lib/ruby/scheduler.rb
 ```
 
 # Tests

@@ -1,13 +1,11 @@
 require 'spec_helper'
-require_relative '../../lib/scheduler'
+require_relative '../../lib/ruby/scheduler'
 
 describe Scheduler do
 
-    let(:schedule) { Scheduler::Schedule.new(meetings) }
-
     context "the Scheduler can be executed" do
         let(:meetings) {
-            { meetings: [{
+            [{
                 name: 'Meeting 1',
                 duration: 1.5,
                 type: :onsite
@@ -27,10 +25,10 @@ describe Scheduler do
                 name: 'Meeting 5',
                 duration: 1,
                 type: :offsite
-            }]}
+            }]
         }
 
-        it { expect(Scheduler.run(schedule)).to be_instance_of Scheduler::Schedule }
+        it { expect(Scheduler.run(meetings)).to be_instance_of Scheduler::Schedule }
 
     end
 

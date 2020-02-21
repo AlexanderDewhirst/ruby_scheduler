@@ -63,10 +63,11 @@ module Scheduler
     def self.run(meetings = nil)
         puts "Execute file"
         if meetings.nil?
-            schedule = Scheduler::Schedule.new({
-                meetings: MEETINGS[:example_1]
-            })
+            meetings = MEETINGS[:example_1]
         end
+        schedule = Scheduler::Schedule.new({
+            meetings: meetings
+        })
 
         schedule.reschedule
         return schedule

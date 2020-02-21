@@ -1,3 +1,3 @@
 #!/bin/bash
 
-ruby lib/scheduler.rb
+ruby lib/ruby/scheduler.rb
