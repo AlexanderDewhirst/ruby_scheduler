@@ -15,7 +15,7 @@ extend past the start and end of the day.
 # Use Scheduler
 To add the scheduler to your Ruby on Rails project, add
 ```
-gem 'ruby-scheduler', '~> 0.1.2'
+gem 'ruby-scheduler', '~> 0.1.3'
 ```
 to your Gemfile. Then run
 ```
