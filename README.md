@@ -11,12 +11,22 @@ them, but off-site meetings must have 30 minutes of travel time padded to either
 end. This travel time however can overlap for back to back off-site meetings, and can
 extend past the start and end of the day.
 
+
+# Use Scheduler
+To add the scheduler to your Ruby on Rails project, add
+```
+gem 'ruby-scheduler', '~> 0.1.2'
+```
+to your Gemfile. Then run
+```
+bundle install
+```
+
 # Run Scheduler
-To run the scheduler
+To run the scheduler from the command line:
 ```
 exec-scheduler
 ```
-
 or 
 ```
 ruby lib/ruby/scheduler.rb
@@ -27,7 +37,6 @@ To run the tests suite
 ```
 test-scheduler
 ```
-
 or to run a specific test file
 ```
 bundle exec rspec spec/lib/scheduler_spec.rb
