@@ -74,6 +74,3 @@ module Scheduler
     end
 
 end
-
-schedule = Scheduler.run()
-puts schedule
